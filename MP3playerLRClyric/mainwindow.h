@@ -2,8 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QFileDialog>
-#include <QMediaPlayer>
+#include "mp3player.h"
 
 namespace Ui {
 class MainWindow;
@@ -20,13 +19,10 @@ public:
 private slots:
     void on_pushButton_2_clicked();
     void on_pushButton_clicked();
-    void MusicPlay();
-    void MusicStop();
 
 private:
     Ui::MainWindow *ui;
-    QString FileName;
-    QMediaPlayer* player = new QMediaPlayer(this);
+    MP3Player MP3P;
 };
 
 #endif // MAINWINDOW_H

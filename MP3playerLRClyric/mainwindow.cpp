@@ -11,20 +11,20 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete player;
 }
 
 void MainWindow::on_pushButton_2_clicked()
 {
-    MusicStop();
-    FileName = QFileDialog::getOpenFileName(
-               this, tr("Open File"), QDir::currentPath(),
-                tr("MP3 file(*.mp3)"));
+    MP3P.MusicStop();
+    ui->pushButton->setText("Play");
+    MP3P.setFileName(QFileDialog::getOpenFileName(
+                         this, tr("Open File"), QDir::currentPath(),
+                          tr("MP3 file(*.mp3)")));
     QString toLabel;
-    for(int i = FileName.length() - 1; i >= 0 ; --i)
+    for(int i = MP3P.getFileNameLength() - 1;i >= 0; --i)
     {
-        if(FileName[i] != '/')
-            toLabel.push_front(FileName[i]);
+        if(MP3P.getFileName(i) != '/')
+            toLabel.push_front(MP3P.getFileName(i));
         else
             break;
     }
@@ -33,24 +33,17 @@ void MainWindow::on_pushButton_2_clicked()
 
 void MainWindow::on_pushButton_clicked()
 {
-    if(ui->pushButton->text() == "Play")
-        MusicPlay();
-    else if(ui->pushButton->text() == "Stop")
-        MusicStop();
+    if(MP3P.getStat() == QMediaPlayer::State::StoppedState)
+    {
+        MP3P.MusicPlay();
+         ui->pushButton->setText("Stop");
+    }
+    else if(MP3P.getStat() == QMediaPlayer::State::PlayingState)
+    {
+        MP3P.MusicStop();
+        ui->pushButton->setText("Play");
+    }
     else
-        player->error();
+        MP3P.getError();
 }
 
-void MainWindow::MusicPlay()
-{
-    player->setMedia(QUrl::fromLocalFile(FileName));
-    player->setVolume(50);
-    player->play();
-    ui->pushButton->setText("Stop");
-}
-
-void MainWindow::MusicStop()
-{
-    player->stop();
-    ui->pushButton->setText("Play");
-}

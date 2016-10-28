@@ -13,8 +13,10 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    mp3player.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    mp3player.h
 
 FORMS    += mainwindow.ui

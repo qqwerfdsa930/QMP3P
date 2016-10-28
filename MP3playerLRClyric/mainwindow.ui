@@ -29,7 +29,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Play</string>
+     <string>Stop</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_2">
