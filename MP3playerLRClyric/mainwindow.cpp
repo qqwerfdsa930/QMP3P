@@ -20,15 +20,7 @@ void MainWindow::on_pushButton_2_clicked()
     MP3P.setFileName(QFileDialog::getOpenFileName(
                          this, tr("Open File"), QDir::currentPath(),
                           tr("MP3 file(*.mp3)")));
-    QString toLabel;
-    for(int i = MP3P.getFileNameLength() - 1;i >= 0; --i)
-    {
-        if(MP3P.getFileName(i) != '/')
-            toLabel.push_front(MP3P.getFileName(i));
-        else
-            break;
-    }
-    ui->label->setText(toLabel);
+    ui->label->setText(MP3P.getFileName().split('/').last());
 }
 
 void MainWindow::on_pushButton_clicked()
