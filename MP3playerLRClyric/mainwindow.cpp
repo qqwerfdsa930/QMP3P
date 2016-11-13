@@ -13,29 +13,60 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_pushButton_2_clicked()
+void MainWindow::on_OpenBtn_clicked()
 {
-    MP3P.MusicStop();
-    ui->pushButton->setText("Play");
+    OpenFile();
+}
+
+void MainWindow::on_PlayBtn_clicked()
+{
+    Play();
+}
+
+void MainWindow::OpenFile()
+{
+    Stop();
     MP3P.setFileName(QFileDialog::getOpenFileName(
                          this, tr("Open File"), QDir::currentPath(),
                           tr("MP3 file(*.mp3)")));
-    ui->label->setText(MP3P.getFileName().split('/').last());
+    ui->NameLab->setText(MP3P.getFileName().split('/').last());
 }
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::Play()
 {
-    if(MP3P.getStat() == QMediaPlayer::State::StoppedState)
+    if(MP3P.getFileName().size() > 0)
     {
-        MP3P.MusicPlay();
-         ui->pushButton->setText("Stop");
+        if(MP3P.getStat() == QMediaPlayer::State::StoppedState)
+        {
+            MP3P.MusicPlay();
+            ui->PlayBtn->setText("Stop");
+            std::thread timerThread(&MainWindow::showTimer, this);
+            timerThread.detach();
+        }
+        else if(MP3P.getStat() == QMediaPlayer::State::PlayingState)
+        {
+            MP3P.MusicStop();
+            ui->PlayBtn->setText("Play");
+        }
+        else
+            MP3P.getError();
     }
-    else if(MP3P.getStat() == QMediaPlayer::State::PlayingState)
-    {
-        MP3P.MusicStop();
-        ui->pushButton->setText("Play");
-    }
-    else
-        MP3P.getError();
 }
 
+void MainWindow::Stop()
+{
+    MP3P.MusicStop();
+    ui->PlayBtn->setText("Play");
+}
+
+void MainWindow::showTimer()
+{
+    while(MP3P.getStat() == QMediaPlayer::State::PlayingState)
+    {
+        ui->TimerLab->setText(timer.getQTimer());
+        timer.show(MP3P.getStat());
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+    }
+    timer.reset();
+    ui->TimerLab->setText(timer.getQTimer());
+}

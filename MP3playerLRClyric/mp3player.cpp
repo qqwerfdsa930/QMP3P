@@ -1,23 +1,8 @@
 #include "mp3player.h"
 
-MP3Player::MP3Player()
-{
-    player->setVolume(50);
-}
-
-MP3Player::~MP3Player()
-{
-    delete player;
-}
-
 QString MP3Player::getFileName()
 {
     return FileName;
-}
-
-QChar MP3Player::getFileName(int i)
-{
-    return FileName[i];
 }
 
 void MP3Player::setFileName(QString qStr)

@@ -14,9 +14,11 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    mp3player.cpp
+    mp3player.cpp \
+    timer.cpp
 
 HEADERS  += mainwindow.h \
-    mp3player.h
+    mp3player.h \
+    timer.h
 
 FORMS    += mainwindow.ui
